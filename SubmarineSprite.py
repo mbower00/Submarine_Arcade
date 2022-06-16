@@ -27,6 +27,8 @@ class SubmarineSprite(a.Sprite):
         if self.left < 0:
             self.left = 0
 
+        
+
         # set velocity back to 0
         self.change_y = 0
         self.change_x = 0
