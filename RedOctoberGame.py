@@ -10,7 +10,7 @@ import json
 
 
 class RedOctoberGame(a.Window):
-    def __init__(self, ip, enemy_ip):
+    def __init__(self, ip, enemy_ip, controller_window):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
         self.all_sprites = a.SpriteList()
         self.ip = ip
@@ -18,6 +18,7 @@ class RedOctoberGame(a.Window):
         self.lock = th.Lock()
         self.radio_opperator = RadioOpperator(self.ip, self.lock)
         self.sending_socket = so.socket()
+        self.controller_window = controller_window
 
     def setup(self):
         a.set_background_color(a.color_from_hex_string(PALETTE_BLUE.upper()))
@@ -39,8 +40,8 @@ class RedOctoberGame(a.Window):
         self.sending_socket.bind((self.ip, CLIENT_PORT))
         self.sending_socket.connect((self.enemy_ip, SERVER_PORT))
 
-        self.controller_window = ControllerWindow()
-        self.controller_window.run()
+        # self.controller_window = ControllerWindow()
+        # self.controller_window.run()
 
     def on_update(self, delta_time : float):
         if self.white_sub.did_move:
