@@ -5,13 +5,13 @@ from turtle import position
 from Constants import *
 
 class RadioOpperator(th.Thread):
-    def __init__(self, ip:str, lock:th.Lock):
+    def __init__(self, ip:str):
         super().__init__()
         self.ip = ip
         self.is_listening = True
-        self.lock = lock
         self.enemy_position = (0,0)
         self.enemy_last_move = (0,0)
+        self.enemy_torpedo_position = None
 
     def run(self):
         with so.socket() as s:
@@ -28,3 +28,7 @@ class RadioOpperator(th.Thread):
                     print(f"{data}")
                     self.enemy_position = (float(data["position"][0]), float(data["position"][1]))
                     self.enemy_last_move = (float(data["move_log"][0]), float(data["move_log"][1]))
+                    if data["torpedo_position"] is not None:
+                        self.enemy_torpedo_position = (float(data["torpedo_position"][0]), float(data["torpedo_position"][1]))
+                    else:
+                        self.enemy_torpedo_position = None

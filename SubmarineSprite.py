@@ -6,6 +6,13 @@ class SubmarineSprite(a.Sprite):
     def __init__(self, filename: str = None, scale: float = 1):
         super().__init__(filename, scale)
         self.did_move = True
+        self.selected_move = ""
+        self.is_move_selected = False
+        self.torpedo_position = None
+        self.is_destroyed = False
+    
+    def update_animation(self, delta_time: float = 1 / 60):
+        return super().update_animation(delta_time)
     
     def update(self):
         super().update()
