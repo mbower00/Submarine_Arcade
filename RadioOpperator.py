@@ -13,6 +13,7 @@ class RadioOpperator(th.Thread):
         self.enemy_last_move = (0,0)
         self.enemy_torpedo_position = None
         self.lock = lock
+        self.is_other_player_ready = False
 
     def run(self):
         with so.socket() as s:
@@ -27,6 +28,8 @@ class RadioOpperator(th.Thread):
                     data = data.decode(encoding="utf8")
                     data = json.loads(data)
                     print(f"{data}")
+                    if data["position"] == "READY":
+                        self.is_other_player_ready = True
                     with self.lock:
                         self.enemy_position = (float(data["position"][0]), float(data["position"][1]))
                         self.enemy_last_move = (float(data["move_log"][0]), float(data["move_log"][1]))

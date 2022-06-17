@@ -123,8 +123,8 @@ class RedOctoberGame(a.Window):
             self.island_sprites.append(self.i)
 
         self.red_sub = a.Sprite("assets/redMark.png", SCALING)
-        self.red_sub.top = UNIT_SIZE * 1
-        self.red_sub.right = UNIT_SIZE * 1
+        self.red_sub.top = UNIT_SIZE * 15
+        self.red_sub.right = UNIT_SIZE * 15
         self.all_sprites.append(self.red_sub)
         self.red_trail_sprites.append(self.red_sub)
 
@@ -147,6 +147,18 @@ class RedOctoberGame(a.Window):
 
         # schedule the reactor tick to continually tick up 
         a.schedule(self._tick_reactor, REACTOR_TICK_TIME)
+
+        # send the READY flag to the other player
+        self.data_to_send["position"] = "READY"
+        # used code from https://www.geeksforgeeks.org/python-interconversion-between-dictionary-and-bytes/
+        data_to_send_local = json.dumps(self.data_to_send) # convert to json string
+        data_to_send_local = data_to_send_local.encode() # convert to bytes
+        self.sending_socket.sendall(data_to_send_local)
+
+        # block until we receive the READY flag
+        while True:
+            if self.radio_opperator.ready == True:
+                break
 
 
 
@@ -171,7 +183,7 @@ class RedOctoberGame(a.Window):
                 marker.change_y = self.red_sub.change_y
                 self.all_sprites.append(marker)
                 self.red_trail_sprites.append(marker)
-                
+
                 self.red_sub.change_x += self.radio_opperator.enemy_last_move[0] # get enemy x position
                 self.red_sub.change_y += self.radio_opperator.enemy_last_move[1] # get enemy y position
                 self.radio_opperator.enemy_last_move = (0,0)
