@@ -157,7 +157,7 @@ class RedOctoberGame(a.Window):
 
         # block until we receive the READY flag
         while True:
-            if self.radio_opperator.ready == True:
+            if self.radio_opperator.is_other_player_ready == True:
                 break
 
 
