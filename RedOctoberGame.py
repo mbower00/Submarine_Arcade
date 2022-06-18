@@ -1,3 +1,4 @@
+from calendar import c
 import random
 import time
 from turtle import right
@@ -145,9 +146,6 @@ class RedOctoberGame(a.Window):
         self.sending_socket.bind((self.ip, CLIENT_PORT))
         self.sending_socket.connect((self.enemy_ip, SERVER_PORT))
 
-        # schedule the reactor tick to continually tick up 
-        a.schedule(self._tick_reactor, REACTOR_TICK_TIME)
-
         # send the READY flag to the other player
         self.data_to_send["position"] = "READY"
         # used code from https://www.geeksforgeeks.org/python-interconversion-between-dictionary-and-bytes/
@@ -160,22 +158,30 @@ class RedOctoberGame(a.Window):
             if self.radio_opperator.is_other_player_ready == True:
                 break
 
+        # schedule the reactor tick to continually tick up 
+        a.schedule(self._tick_reactor, REACTOR_TICK_TIME)
 
 
 
     def on_update(self, delta_time : float):
-        # Add move to the data to send, if moved 
+# handle no lives
+        if self.heart_1.is_active and self.heart_2.is_active:
+            self.failure = a.Sprite("assets/failure.png", SCALING)
+            self.failure.center_x = SCREEN_WIDTH / 2
+            self.failure.center_y = SCREEN_HEIGHT / 2
+            self.all_sprites.append(self.failure)
+
+# Add move to the data to send, if moved 
         if self.white_sub.did_move:
             # self.data_to_send["move_log"].append((self.white_sub.change_x, self.white_sub.change_y))
             self.data_to_send["move_log"] = (self.white_sub.change_x, self.white_sub.change_y)
-        
-        # NOTE: check collisions (if applicable for this game) before updating sprites
 
-        # update sprites
+# update sprites
         self._update_reactor_from_tick()
 
         with self.lock:
             if self.radio_opperator.enemy_last_move[0] != 0 or self.radio_opperator.enemy_last_move[1] != 0:
+# handle red sub
                 marker = a.Sprite("assets/redMarkSmall.png", SCALING)
                 marker.center_x = self.red_sub.center_x
                 marker.center_y = self.red_sub.center_y
@@ -188,13 +194,47 @@ class RedOctoberGame(a.Window):
                 self.red_sub.change_y += self.radio_opperator.enemy_last_move[1] # get enemy y position
                 self.radio_opperator.enemy_last_move = (0,0)
 
-        self.all_sprites.update()
+# handle torpedo
+            torpedo_position = self.radio_opperator.enemy_torpedo_position
 
+            if torpedo_position != None:
+                print("entering torpedo handling...")
+                torpedo_x = torpedo_position[0]
+                torpedo_y = torpedo_position[1]
+                indirect_hits = [
+                    (torpedo_x, torpedo_y + UNIT_SIZE), # north
+                    (torpedo_x - UNIT_SIZE, torpedo_y + UNIT_SIZE), # north west
+                    (torpedo_x + UNIT_SIZE, torpedo_y + UNIT_SIZE), # north east
+                    (torpedo_x, torpedo_y - UNIT_SIZE), # south
+                    (torpedo_x - UNIT_SIZE, torpedo_y - UNIT_SIZE), # south west
+                    (torpedo_x + UNIT_SIZE, torpedo_y - UNIT_SIZE), # south east
+                    (torpedo_x - UNIT_SIZE, torpedo_y), # west
+                    (torpedo_x + UNIT_SIZE, torpedo_y) # east
+                ]
+                if self.white_sub.collides_with_point(torpedo_position):
+                    # direct hit
+                    print("direct hit".upper())
+                    self._take_damage(2)
+                else:
+                    for i in indirect_hits:
+                        print(f"checking for indirect hit at: {i}")
+                        if self.white_sub.collides_with_point(i):
+                            # indirect hit
+                            print("indirect hit".upper())
+                            self._take_damage(1)
+                            break
+
+            self.radio_opperator.enemy_torpedo_position = None
+        
+# handle updating all sprites
+        self.all_sprites.update()
+        
+# set red sub & trail velocity back to 0
         for i in self.red_trail_sprites:
             i.change_x = 0
             i.change_y = 0
         
-        # update and send data to the other computer, if moved 
+# update and send data to the other computer, if moved 
         if self.white_sub.did_move:
             self.data_to_send["position"] = self.white_sub.position
             self.data_to_send["torpedo_position"] = self.white_sub.torpedo_position
@@ -212,6 +252,7 @@ class RedOctoberGame(a.Window):
         a.start_render()
         #draw the sprites
         self.all_sprites.draw()
+        # print(len(self.all_sprites))
         #draw a border between the map area and the control panel
         a.draw_lrtb_rectangle_filled(SCREEN_WIDTH, SCREEN_WIDTH + 10, SCREEN_HEIGHT, 0, a.color_from_hex_string(PALETTE_WHITE.upper()))
 
@@ -232,52 +273,77 @@ class RedOctoberGame(a.Window):
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
         if not self.white_sub.is_move_selected:
             # if NORTH
+            amount_will_move = 10 * SCALING
             if self.north_button.collides_with_point((x,y)):
-                self.white_sub.is_move_selected = True
-                self.white_sub.selected_move = "n"
-                    
-                #change out sprite
-                self.north_button.kill()
-                self.north_button = a.Sprite("assets/north_active.png", SCALING)
-                self.north_button.center_x = SCREEN_WIDTH + ( (SCREEN_WIDTH // 2) / 2)
-                self.north_button.top = ( self.screen_height / 5 ) * 3
-                self.all_sprites.append(self.north_button)
+                potential_sub_move = a.Sprite("assets/whiteMark.png", SCALING)
+                potential_sub_move.center_x = self.white_sub.center_x
+                potential_sub_move.center_y = self.white_sub.center_y + amount_will_move
+                # # display the potential collisions...
+                # print(len(potential_sub_move.collides_with_list(self.island_sprites)) > 0)
+                # print(len(potential_sub_move.collides_with_list(self.white_trail_sprites)) > 0)
+                # print(potential_sub_move.top > SCREEN_HEIGHT)
+                # will not allow it to be selected if the potential move collides with any island, collides with any piece of the white trail, or if it is past the play area
+                if not len(potential_sub_move.collides_with_list(self.island_sprites)) > 0 and not len(potential_sub_move.collides_with_list(self.white_trail_sprites)) > 0 and not potential_sub_move.top > SCREEN_HEIGHT :
+                    self.white_sub.is_move_selected = True
+                    self.white_sub.selected_move = "n"
+                        
+                    #change out sprite
+                    self.north_button.kill()
+                    self.north_button = a.Sprite("assets/north_active.png", SCALING)
+                    self.north_button.center_x = SCREEN_WIDTH + ( (SCREEN_WIDTH // 2) / 2)
+                    self.north_button.top = ( self.screen_height / 5 ) * 3
+                    self.all_sprites.append(self.north_button)
 
             # if SOUTH 
             elif self.south_button.collides_with_point((x,y)):
-                self.white_sub.is_move_selected = True
-                self.white_sub.selected_move = "s"
-                    
-                #change out sprite
-                self.south_button.kill()
-                self.south_button = a.Sprite("assets/south_active.png", SCALING)
-                self.south_button.center_x = SCREEN_WIDTH + ( (SCREEN_WIDTH // 2) / 2)
-                self.south_button.bottom = ( self.screen_height / 5 ) * 1
-                self.all_sprites.append(self.south_button)
+                potential_sub_move = a.Sprite("assets/whiteMark.png", SCALING)
+                potential_sub_move.center_x = self.white_sub.center_x
+                potential_sub_move.center_y = self.white_sub.center_y - amount_will_move
+                # will not allow it to be selected if the potential move collides with any island, collides with any piece of the white trail, or if it is past the play area
+                if not len(potential_sub_move.collides_with_list(self.island_sprites)) > 0 and not len(potential_sub_move.collides_with_list(self.white_trail_sprites)) > 0 and not potential_sub_move.bottom < 0:
+                    self.white_sub.is_move_selected = True
+                    self.white_sub.selected_move = "s"
+                        
+                    #change out sprite
+                    self.south_button.kill()
+                    self.south_button = a.Sprite("assets/south_active.png", SCALING)
+                    self.south_button.center_x = SCREEN_WIDTH + ( (SCREEN_WIDTH // 2) / 2)
+                    self.south_button.bottom = ( self.screen_height / 5 ) * 1
+                    self.all_sprites.append(self.south_button)
 
             # if WEST 
             elif self.west_button.collides_with_point((x,y)):
-                self.white_sub.is_move_selected = True
-                self.white_sub.selected_move = "w"
-                    
-                #change out sprite
-                self.west_button.kill()
-                self.west_button = a.Sprite("assets/west_active.png", SCALING)
-                self.west_button.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
-                self.west_button.center_y = ( self.screen_height / 5 ) * 2
-                self.all_sprites.append(self.west_button)
+                potential_sub_move = a.Sprite("assets/whiteMark.png", SCALING)
+                potential_sub_move.center_x = self.white_sub.center_x - amount_will_move
+                potential_sub_move.center_y = self.white_sub.center_y
+                # will not allow it to be selected if the potential move collides with any island, collides with any piece of the white trail, or if it is past the play area
+                if not len(potential_sub_move.collides_with_list(self.island_sprites)) > 0 and not len(potential_sub_move.collides_with_list(self.white_trail_sprites)) > 0 and not potential_sub_move.left < 0:
+                    self.white_sub.is_move_selected = True
+                    self.white_sub.selected_move = "w"
+                        
+                    #change out sprite
+                    self.west_button.kill()
+                    self.west_button = a.Sprite("assets/west_active.png", SCALING)
+                    self.west_button.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
+                    self.west_button.center_y = ( self.screen_height / 5 ) * 2
+                    self.all_sprites.append(self.west_button)
 
             # if EAST
             elif self.east_button.collides_with_point((x,y)):
-                self.white_sub.is_move_selected = True
-                self.white_sub.selected_move = "e"
-                    
-                #change out sprite
-                self.east_button.kill()
-                self.east_button = a.Sprite("assets/east_active.png", SCALING)
-                self.east_button.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-                self.east_button.center_y = ( self.screen_height / 5 ) * 2
-                self.all_sprites.append(self.east_button)
+                potential_sub_move = a.Sprite("assets/whiteMark.png", SCALING)
+                potential_sub_move.center_x = self.white_sub.center_x + amount_will_move
+                potential_sub_move.center_y = self.white_sub.center_y
+                # will not allow it to be selected if the potential move collides with any island, collides with any piece of the white trail, or if it is past the play area
+                if not len(potential_sub_move.collides_with_list(self.island_sprites)) > 0 and not len(potential_sub_move.collides_with_list(self.white_trail_sprites)) > 0 and not potential_sub_move.right > SCREEN_WIDTH:
+                    self.white_sub.is_move_selected = True
+                    self.white_sub.selected_move = "e"
+                        
+                    #change out sprite
+                    self.east_button.kill()
+                    self.east_button = a.Sprite("assets/east_active.png", SCALING)
+                    self.east_button.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
+                    self.east_button.center_y = ( self.screen_height / 5 ) * 2
+                    self.all_sprites.append(self.east_button)
             
             # if FIRE
             elif self.fire.collides_with_point((x,y)):
@@ -296,7 +362,7 @@ class RedOctoberGame(a.Window):
             if self.white_sub.is_move_selected:
                 
                 # NORTH 
-                if self.white_sub.selected_move == "n" and self.nuclear_1.is_active:
+                if self.white_sub.selected_move == "n":#if you want to require a reactor... and self.nuclear_1.is_active:
                     self.white_sub.did_move = True
                     self.white_sub.is_move_selected = False #maybe change this to be in the update section
                     self.white_sub.selected_move = ""
@@ -312,7 +378,7 @@ class RedOctoberGame(a.Window):
                     self.all_sprites.append(self.north_button)
 
                 # SOUTH 
-                elif self.white_sub.selected_move == "s" and self.nuclear_1.is_active:
+                elif self.white_sub.selected_move == "s":#if you want to require a reactor... and self.nuclear_1.is_active:
                     self.white_sub.did_move = True
                     self.white_sub.is_move_selected = False #maybe change this to be in the update section
                     self.white_sub.selected_move = ""
@@ -328,7 +394,7 @@ class RedOctoberGame(a.Window):
                     self.all_sprites.append(self.south_button)
 
                 # WEST 
-                elif self.white_sub.selected_move == "w" and self.nuclear_1.is_active:
+                elif self.white_sub.selected_move == "w":#if you want to require a reactor... and self.nuclear_1.is_active:
                     self.white_sub.did_move = True
                     self.white_sub.is_move_selected = False #maybe change this to be in the update section
                     self.white_sub.selected_move = ""
@@ -344,7 +410,7 @@ class RedOctoberGame(a.Window):
                     self.all_sprites.append(self.west_button)
 
                 # EAST 
-                elif self.white_sub.selected_move == "e" and self.nuclear_1.is_active:
+                elif self.white_sub.selected_move == "e":#if you want to require a reactor INCLUDE... and self.nuclear_1.is_active:
                     self.white_sub.did_move = True
                     self.white_sub.is_move_selected = False #maybe change this to be in the update section
                     self.white_sub.selected_move = ""
@@ -359,19 +425,20 @@ class RedOctoberGame(a.Window):
                     self.east_button.center_y = ( self.screen_height / 5 ) * 2
                     self.all_sprites.append(self.east_button)
 
-                # FIRE: 2 nuclear reactors must be active and fire must be selected to fire a torpedo
-                elif self.white_sub.selected_move == "f" and self.nuclear_1.is_active and self.nuclear_2.is_active:
-                    self.white_sub.did_move = True
-                    self.white_sub.is_move_selected = False #maybe change this to be in the update section
-                    self.white_sub.selected_move = ""
-                    self.white_sub.torpedo_position = [self.red_sub.center_x, self.red_sub.center_y]
-                    
-                    #change out sprite
-                    self.fire.kill()
-                    self.fire = a.Sprite("assets/fire.png", SCALING)
-                    self.fire.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
-                    self.fire.center_y = ( self.screen_height / 5 ) * 2
-                    self.all_sprites.append(self.fire)
+                # FIRE: 3 nuclear reactors must be active (only if that section is uncommented) and fire must be selected to fire a torpedo
+                elif self.white_sub.selected_move == "f":
+                    # if self.nuclear_1.is_active and self.nuclear_2.is_active and self.nuclear_3.is_active: # INCLUDE if you want to require reactors... 
+                        self.white_sub.did_move = True
+                        self.white_sub.is_move_selected = False #maybe change this to be in the update section
+                        self.white_sub.selected_move = ""
+                        self.white_sub.torpedo_position = [self.red_sub.center_x, self.red_sub.center_y]
+                        
+                        #change out sprite
+                        self.fire.kill()
+                        self.fire = a.Sprite("assets/fire.png", SCALING)
+                        self.fire.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
+                        self.fire.center_y = ( self.screen_height / 5 ) * 2
+                        self.all_sprites.append(self.fire)
 
     def _place_marker(self):
         marker = a.Sprite("assets/whiteMarkSmall.png", SCALING)
@@ -390,19 +457,19 @@ class RedOctoberGame(a.Window):
         if tick == 0:
             # change out nuclear sprites
 
-            self.nuclear_1.kill
+            self.nuclear_1.kill()
             self.nuclear_1 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
             self.nuclear_1.top = ( self.screen_height / 5 ) * 4
             self.all_sprites.append(self.nuclear_1)
 
-            self.nuclear_2.kill
+            self.nuclear_2.kill()
             self.nuclear_2 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
             self.nuclear_2.top = ( self.screen_height / 5 ) * 4
             self.all_sprites.append(self.nuclear_2)
 
-            self.nuclear_3.kill
+            self.nuclear_3.kill()
             self.nuclear_3 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
             self.nuclear_3.top = ( self.screen_height / 5 ) * 4
@@ -411,20 +478,20 @@ class RedOctoberGame(a.Window):
         elif tick == 1:
             # change out nuclear sprites
 
-            self.nuclear_1.kill
+            self.nuclear_1.kill()
             self.nuclear_1 = ToggleSprite("assets/nuclear_active.png", SCALING)
             self.nuclear_1.is_active = True
             self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
             self.nuclear_1.top = ( self.screen_height / 5 ) * 4
             self.all_sprites.append(self.nuclear_1)
 
-            self.nuclear_2.kill
+            self.nuclear_2.kill()
             self.nuclear_2 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
             self.nuclear_2.top = ( self.screen_height / 5 ) * 4
             self.all_sprites.append(self.nuclear_2)
 
-            self.nuclear_3.kill
+            self.nuclear_3.kill()
             self.nuclear_3 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
             self.nuclear_3.top = ( self.screen_height / 5 ) * 4
@@ -433,21 +500,21 @@ class RedOctoberGame(a.Window):
         elif tick == 2:
             # change out nuclear sprites
 
-            self.nuclear_1.kill
+            self.nuclear_1.kill()
             self.nuclear_1 = ToggleSprite("assets/nuclear_active.png", SCALING)
             self.nuclear_1.is_active = True
             self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
             self.nuclear_1.top = ( self.screen_height / 5 ) * 4
             self.all_sprites.append(self.nuclear_1)
 
-            self.nuclear_2.kill
+            self.nuclear_2.kill()
             self.nuclear_2 = ToggleSprite("assets/nuclear_active.png", SCALING)
             self.nuclear_2.is_active = True
             self.nuclear_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
             self.nuclear_2.top = ( self.screen_height / 5 ) * 4
             self.all_sprites.append(self.nuclear_2)
 
-            self.nuclear_3.kill
+            self.nuclear_3.kill()
             self.nuclear_3 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
             self.nuclear_3.top = ( self.screen_height / 5 ) * 4
@@ -456,21 +523,21 @@ class RedOctoberGame(a.Window):
         elif tick == 3:
             # change out nuclear sprites
 
-            self.nuclear_1.kill
+            self.nuclear_1.kill()
             self.nuclear_1 = ToggleSprite("assets/nuclear_active.png", SCALING)
             self.nuclear_1.is_active = True
             self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
             self.nuclear_1.top = ( self.screen_height / 5 ) * 4
             self.all_sprites.append(self.nuclear_1)
 
-            self.nuclear_2.kill
+            self.nuclear_2.kill()
             self.nuclear_2 = ToggleSprite("assets/nuclear_active.png", SCALING)
             self.nuclear_2.is_active = True
             self.nuclear_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
             self.nuclear_2.top = ( self.screen_height / 5 ) * 4
             self.all_sprites.append(self.nuclear_2)
 
-            self.nuclear_3.kill
+            self.nuclear_3.kill()
             self.nuclear_3 = ToggleSprite("assets/nuclear_active.png", SCALING)
             self.nuclear_3.is_active = True
             self.nuclear_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
@@ -480,19 +547,19 @@ class RedOctoberGame(a.Window):
         elif tick > 3:
             # change out nuclear sprites
 
-            self.nuclear_1.kill
+            self.nuclear_1.kill()
             self.nuclear_1 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
             self.nuclear_1.top = ( self.screen_height / 5 ) * 4
             self.all_sprites.append(self.nuclear_1)
 
-            self.nuclear_2.kill
+            self.nuclear_2.kill()
             self.nuclear_2 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
             self.nuclear_2.top = ( self.screen_height / 5 ) * 4
             self.all_sprites.append(self.nuclear_2)
 
-            self.nuclear_3.kill
+            self.nuclear_3.kill()
             self.nuclear_3 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
             self.nuclear_3.top = ( self.screen_height / 5 ) * 4
@@ -510,19 +577,19 @@ class RedOctoberGame(a.Window):
     def _clear_reactors_and_tick(self):
         # change out nuclear sprites
 
-        self.nuclear_1.kill
+        self.nuclear_1.kill()
         self.nuclear_1 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
         self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
         self.nuclear_1.top = ( self.screen_height / 5 ) * 4
         self.all_sprites.append(self.nuclear_1)
 
-        self.nuclear_2.kill
+        self.nuclear_2.kill()
         self.nuclear_2 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
         self.nuclear_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
         self.nuclear_2.top = ( self.screen_height / 5 ) * 4
         self.all_sprites.append(self.nuclear_2)
 
-        self.nuclear_3.kill
+        self.nuclear_3.kill()
         self.nuclear_3 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
         self.nuclear_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
         self.nuclear_3.top = ( self.screen_height / 5 ) * 4
@@ -538,12 +605,14 @@ class RedOctoberGame(a.Window):
             if self.heart_2.is_active:
                 #change out heart sprites
 
+                self.heart_1.kill()
                 self.heart_1 = ToggleSprite("assets/heart_full.png", SCALING)
                 self.heart_1.is_active = True
                 self.heart_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*2)
                 self.heart_1.top = ( self.screen_height / 5 ) * 5 - 10
                 self.all_sprites.append(self.heart_1)
 
+                self.heart_2.kill()
                 self.heart_2 = ToggleSprite("assets/heart_empty.png", SCALING)
                 self.heart_2.is_active = False
                 self.heart_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*4)
@@ -552,12 +621,14 @@ class RedOctoberGame(a.Window):
             elif self.heart_1.is_active:
                 #change out heart sprites
 
+                self.heart_1.kill()
                 self.heart_1 = ToggleSprite("assets/heart_empty.png", SCALING)
                 self.heart_1.is_active = False
                 self.heart_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*2)
                 self.heart_1.top = ( self.screen_height / 5 ) * 5 - 10
                 self.all_sprites.append(self.heart_1)
 
+                self.heart_2.kill()
                 self.heart_2 = ToggleSprite("assets/heart_empty.png", SCALING)
                 self.heart_2.is_active = False
                 self.heart_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*4)
@@ -571,12 +642,14 @@ class RedOctoberGame(a.Window):
         elif amount > 1:
             #change out heart sprites
 
-            self.heart_1 = ToggleSprite("assets/heart_full.png", SCALING)
+            self.heart_1.kill()
+            self.heart_1 = ToggleSprite("assets/heart_empty.png", SCALING)
             self.heart_1.is_active = False
             self.heart_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*2)
             self.heart_1.top = ( self.screen_height / 5 ) * 5 - 10
             self.all_sprites.append(self.heart_1)
 
+            self.heart_2.kill()
             self.heart_2 = ToggleSprite("assets/heart_empty.png", SCALING)
             self.heart_2.is_active = False
             self.heart_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*4)
