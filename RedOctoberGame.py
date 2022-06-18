@@ -27,6 +27,7 @@ class RedOctoberGame(a.Window):
         self.radio_opperator = RadioOpperator(self.ip, self.lock)
         self.sending_socket = so.socket()
         self.reactor_tick = 0
+        self.is_playing = True
 
     def setup(self):
         a.set_background_color(a.color_from_hex_string(PALETTE_BLUE.upper()))
@@ -164,89 +165,102 @@ class RedOctoberGame(a.Window):
 
 
     def on_update(self, delta_time : float):
-# handle no lives
-        if self.heart_1.is_active and self.heart_2.is_active:
-            self.failure = a.Sprite("assets/failure.png", SCALING)
-            self.failure.center_x = SCREEN_WIDTH / 2
-            self.failure.center_y = SCREEN_HEIGHT / 2
-            self.all_sprites.append(self.failure)
-
-# Add move to the data to send, if moved 
-        if self.white_sub.did_move:
-            # self.data_to_send["move_log"].append((self.white_sub.change_x, self.white_sub.change_y))
-            self.data_to_send["move_log"] = (self.white_sub.change_x, self.white_sub.change_y)
-
-# update sprites
-        self._update_reactor_from_tick()
-
+    # handle victory
         with self.lock:
-            if self.radio_opperator.enemy_last_move[0] != 0 or self.radio_opperator.enemy_last_move[1] != 0:
-# handle red sub
-                marker = a.Sprite("assets/redMarkSmall.png", SCALING)
-                marker.center_x = self.red_sub.center_x
-                marker.center_y = self.red_sub.center_y
-                marker.change_x = self.red_sub.change_x
-                marker.change_y = self.red_sub.change_y
-                self.all_sprites.append(marker)
-                self.red_trail_sprites.append(marker)
+            if self.radio_opperator.is_victory:
+                self.victory = a.Sprite("assets/victory.png", SCALING)
+                self.victory.center_x = SCREEN_WIDTH / 2
+                self.victory.center_y = SCREEN_HEIGHT / 2
+                self.all_sprites.append(self.victory)
+                self.is_playing = False
 
-                self.red_sub.change_x += self.radio_opperator.enemy_last_move[0] # get enemy x position
-                self.red_sub.change_y += self.radio_opperator.enemy_last_move[1] # get enemy y position
-                self.radio_opperator.enemy_last_move = (0,0)
+    # only update the rest if the game is still going.
+        if self.is_playing:
+    
+    # handle no lives
+            if not self.heart_1.is_active and not self.heart_2.is_active:
+                self.failure = a.Sprite("assets/failure.png", SCALING)
+                self.failure.center_x = SCREEN_WIDTH / 2
+                self.failure.center_y = SCREEN_HEIGHT / 2
+                self.all_sprites.append(self.failure)
+                self.is_playing = False
 
-# handle torpedo
-            torpedo_position = self.radio_opperator.enemy_torpedo_position
+    # Add move to the data to send, if moved 
+            if self.white_sub.did_move:
+                # self.data_to_send["move_log"].append((self.white_sub.change_x, self.white_sub.change_y))
+                self.data_to_send["move_log"] = (self.white_sub.change_x, self.white_sub.change_y)
 
-            if torpedo_position != None:
-                print("entering torpedo handling...")
-                torpedo_x = torpedo_position[0]
-                torpedo_y = torpedo_position[1]
-                indirect_hits = [
-                    (torpedo_x, torpedo_y + UNIT_SIZE), # north
-                    (torpedo_x - UNIT_SIZE, torpedo_y + UNIT_SIZE), # north west
-                    (torpedo_x + UNIT_SIZE, torpedo_y + UNIT_SIZE), # north east
-                    (torpedo_x, torpedo_y - UNIT_SIZE), # south
-                    (torpedo_x - UNIT_SIZE, torpedo_y - UNIT_SIZE), # south west
-                    (torpedo_x + UNIT_SIZE, torpedo_y - UNIT_SIZE), # south east
-                    (torpedo_x - UNIT_SIZE, torpedo_y), # west
-                    (torpedo_x + UNIT_SIZE, torpedo_y) # east
-                ]
-                if self.white_sub.collides_with_point(torpedo_position):
-                    # direct hit
-                    print("direct hit".upper())
-                    self._take_damage(2)
-                else:
-                    for i in indirect_hits:
-                        print(f"checking for indirect hit at: {i}")
-                        if self.white_sub.collides_with_point(i):
-                            # indirect hit
-                            print("indirect hit".upper())
-                            self._take_damage(1)
-                            break
+    # update sprites
+            self._update_reactor_from_tick()
 
-            self.radio_opperator.enemy_torpedo_position = None
-        
-# handle updating all sprites
-        self.all_sprites.update()
-        
-# set red sub & trail velocity back to 0
-        for i in self.red_trail_sprites:
-            i.change_x = 0
-            i.change_y = 0
-        
-# update and send data to the other computer, if moved 
-        if self.white_sub.did_move:
-            self.data_to_send["position"] = self.white_sub.position
-            self.data_to_send["torpedo_position"] = self.white_sub.torpedo_position
+            with self.lock:
+                if self.radio_opperator.enemy_last_move[0] != 0 or self.radio_opperator.enemy_last_move[1] != 0:
+    # handle red sub
+                    marker = a.Sprite("assets/redMarkSmall.png", SCALING)
+                    marker.center_x = self.red_sub.center_x
+                    marker.center_y = self.red_sub.center_y
+                    marker.change_x = self.red_sub.change_x
+                    marker.change_y = self.red_sub.change_y
+                    self.all_sprites.append(marker)
+                    self.red_trail_sprites.append(marker)
+
+                    self.red_sub.change_x += self.radio_opperator.enemy_last_move[0] # get enemy x position
+                    self.red_sub.change_y += self.radio_opperator.enemy_last_move[1] # get enemy y position
+                    self.radio_opperator.enemy_last_move = (0,0)
+
+    # handle torpedo
+                torpedo_position = self.radio_opperator.enemy_torpedo_position
+
+                if torpedo_position != None:
+                    print("entering torpedo handling...")
+                    torpedo_x = torpedo_position[0]
+                    torpedo_y = torpedo_position[1]
+                    indirect_hits = [
+                        (torpedo_x, torpedo_y + UNIT_SIZE), # north
+                        (torpedo_x - UNIT_SIZE, torpedo_y + UNIT_SIZE), # north west
+                        (torpedo_x + UNIT_SIZE, torpedo_y + UNIT_SIZE), # north east
+                        (torpedo_x, torpedo_y - UNIT_SIZE), # south
+                        (torpedo_x - UNIT_SIZE, torpedo_y - UNIT_SIZE), # south west
+                        (torpedo_x + UNIT_SIZE, torpedo_y - UNIT_SIZE), # south east
+                        (torpedo_x - UNIT_SIZE, torpedo_y), # west
+                        (torpedo_x + UNIT_SIZE, torpedo_y) # east
+                    ]
+                    if self.white_sub.collides_with_point(torpedo_position):
+                        # direct hit
+                        print("direct hit".upper())
+                        self._take_damage(2)
+                    else:
+                        for i in indirect_hits:
+                            print(f"checking for indirect hit at: {i}")
+                            if self.white_sub.collides_with_point(i):
+                                # indirect hit
+                                print("indirect hit".upper())
+                                self._take_damage(1)
+                                break
+
+                self.radio_opperator.enemy_torpedo_position = None
             
-            # used code from https://www.geeksforgeeks.org/python-interconversion-between-dictionary-and-bytes/
-            data_to_send_local = json.dumps(self.data_to_send) # convert to json string
-            # data_to_send_local = str(self.data_to_send)
-            data_to_send_local = data_to_send_local.encode() # convert to bytes
-            self.sending_socket.sendall(data_to_send_local)
+    # handle updating all sprites
+            self.all_sprites.update()
             
-            self.white_sub.torpedo_position = None
-            self.white_sub.did_move = False
+    # set red sub & trail velocity back to 0
+            for i in self.red_trail_sprites:
+                i.change_x = 0
+                i.change_y = 0
+            
+    # update and send data to the other computer, if moved 
+            if self.white_sub.did_move:
+                self.data_to_send["position"] = self.white_sub.position
+                self.data_to_send["torpedo_position"] = self.white_sub.torpedo_position
+                
+                # used code from https://www.geeksforgeeks.org/python-interconversion-between-dictionary-and-bytes/
+                data_to_send_local = json.dumps(self.data_to_send) # convert to json string
+                # data_to_send_local = str(self.data_to_send)
+                data_to_send_local = data_to_send_local.encode() # convert to bytes
+                self.sending_socket.sendall(data_to_send_local)
+                
+                self.white_sub.torpedo_position = None
+                self.white_sub.did_move = False
 
     def on_draw(self):
         a.start_render()

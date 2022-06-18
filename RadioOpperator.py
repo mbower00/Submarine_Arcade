@@ -14,6 +14,7 @@ class RadioOpperator(th.Thread):
         self.enemy_torpedo_position = None
         self.lock = lock
         self.is_other_player_ready = False
+        self.is_victory = None
 
     def run(self):
         with so.socket() as s:
@@ -32,9 +33,12 @@ class RadioOpperator(th.Thread):
                         self.is_other_player_ready = True
                     else: # usual procedure...
                         with self.lock:
-                            self.enemy_position = (float(data["position"][0]), float(data["position"][1]))
-                            self.enemy_last_move = (float(data["move_log"][0]), float(data["move_log"][1]))
-                            if data["torpedo_position"] is not None:
-                                self.enemy_torpedo_position = (float(data["torpedo_position"][0]), float(data["torpedo_position"][1]))
+                            if data["position"] == "VICTORY":
+                                self.is_victory = True
                             else:
-                                self.enemy_torpedo_position = None
+                                self.enemy_position = (float(data["position"][0]), float(data["position"][1]))
+                                self.enemy_last_move = (float(data["move_log"][0]), float(data["move_log"][1]))
+                                if data["torpedo_position"] is not None:
+                                    self.enemy_torpedo_position = (float(data["torpedo_position"][0]), float(data["torpedo_position"][1]))
+                                else:
+                                    self.enemy_torpedo_position = None
