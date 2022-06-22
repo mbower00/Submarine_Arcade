@@ -28,7 +28,7 @@ Here is a demonstration of the software.
 
 I used a peer to peer format for the networking side of this program
 
-[Peer to Peer Connection Visual]("https://github.com/mbower00/The-Hunt-for-Red-October-Arcade/blob/master/assets/socket_visual.png")
+![Peer to Peer Connection Visual](https://github.com/mbower00/The-Hunt-for-Red-October-Arcade/blob/master/assets/socket_visual.png)
 
 {Identify if you are using TCP or UDP and what port numbers are used.}
 
