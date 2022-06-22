@@ -28,7 +28,7 @@ Here is a demonstration of the software.
 
 I used a peer to peer format for the networking side of this program
 
-![client-server connection visual showing the client of one computer connected to the server of the other computer and vice versa.]("./socket_visual.png")
+![client-server connection visual showing the client of one computer connected to the server of the other computer and vice versa.]("https://github.com/mbower00/The-Hunt-for-Red-October-Arcade/blob/master/assets/socket_visual.png")
 
 {Identify if you are using TCP or UDP and what port numbers are used.}
 
