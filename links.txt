@@ -21,3 +21,5 @@ https://api.arcade.academy/en/stable/api/drawing_utilities.html
 https://api.arcade.academy/en/latest/api/physics_engines.html
 https://api.arcade.academy/en/stable/_modules/arcade/drawing_support.html#color_from_hex_string
 https://www.geeksforgeeks.org/difference-between-__sizeof__-and-getsizeof-method-python/
+https://www.mathcs.emory.edu/~valerie/courses/fall10/155/resources/op_precedence.html
+https://realpython.com/platformer-python-arcade/

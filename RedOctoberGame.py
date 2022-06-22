@@ -1,15 +1,12 @@
-from calendar import c
 import random
-import time
-from turtle import right
 import arcade as a
 import socket as so
 import threading as th
+import json
 from Constants import *
 from RadioOpperator import RadioOpperator
 from ToggleSprite import ToggleSprite
 from SubmarineSprite import SubmarineSprite
-import json
 
 
 class RedOctoberGame(a.Window):

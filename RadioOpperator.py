@@ -1,7 +1,6 @@
 import json
 import threading as th
 import socket as so
-from turtle import position
 from Constants import *
 
 class RadioOpperator(th.Thread):

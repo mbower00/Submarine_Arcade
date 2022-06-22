@@ -1,8 +1,8 @@
-import threading
 from RedOctoberGame import RedOctoberGame
 from Constants import *
 
 def main():
+    # differentiate between the two computers 
     choice = input("white or black computer? [w, b] > ")
     if choice == "w":
         ip = WHITE_IP
