@@ -40,69 +40,69 @@ class RedOctoberGame(a.Window):
 
         self.fire = a.Sprite("assets/fire.png", SCALING)
         self.fire.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
-        self.fire.center_y = ( self.screen_height / 5 ) * 2
+        self.fire.center_y = ( self.screen_height / 6 ) * 2
         self.all_sprites.append(self.fire)
 
         self.north_button = a.Sprite("assets/north.png", SCALING)
         self.north_button.center_x = SCREEN_WIDTH + ( (SCREEN_WIDTH // 2) / 2)
-        self.north_button.top = ( self.screen_height / 5 ) * 3
+        self.north_button.top = ( self.screen_height / 6 ) * 3
         self.all_sprites.append(self.north_button)
 
         self.south_button = a.Sprite("assets/south.png", SCALING)
         self.south_button.center_x = SCREEN_WIDTH + ( (SCREEN_WIDTH // 2) / 2)
-        self.south_button.bottom = ( self.screen_height / 5 ) * 1
+        self.south_button.bottom = ( self.screen_height / 6 ) * 1
         self.all_sprites.append(self.south_button)
 
         self.east_button = a.Sprite("assets/east.png", SCALING)
         self.east_button.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-        self.east_button.center_y = ( self.screen_height / 5 ) * 2
+        self.east_button.center_y = ( self.screen_height / 6 ) * 2
         self.all_sprites.append(self.east_button)
 
         self.west_button = a.Sprite("assets/west.png", SCALING)
         self.west_button.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
-        self.west_button.center_y = ( self.screen_height / 5 ) * 2
+        self.west_button.center_y = ( self.screen_height / 6 ) * 2
         self.all_sprites.append(self.west_button)
 
         self.nuclear_1 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
         self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
-        self.nuclear_1.top = (( self.screen_height / 5 ) * 4 ) + 15
+        self.nuclear_1.top = (( self.screen_height / 6 ) * 5 )
         self.all_sprites.append(self.nuclear_1)
 
         self.nuclear_2 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
         self.nuclear_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
-        self.nuclear_2.top = (( self.screen_height / 5 ) * 4 ) + 15
+        self.nuclear_2.top = (( self.screen_height / 6 ) * 5 )
         self.all_sprites.append(self.nuclear_2)
 
         self.nuclear_3 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
         self.nuclear_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-        self.nuclear_3.top = (( self.screen_height / 5 ) * 4 ) + 15
+        self.nuclear_3.top = (( self.screen_height / 6 ) * 5 )
         self.all_sprites.append(self.nuclear_3)
         
         self.torpedo_segment_1 = ToggleSprite("assets/torpedo_segment_1_inactive.png", SCALING)
-        self.torpedo_segment_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-        self.torpedo_segment_1.top = (( self.screen_height / 5 ) * 4 ) - 15
+        self.torpedo_segment_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
+        self.torpedo_segment_1.top = (( self.screen_height / 6 ) * 4 )
         self.all_sprites.append(self.torpedo_segment_1)
 
         self.torpedo_segment_2 = ToggleSprite("assets/torpedo_segment_2_inactive.png", SCALING)
-        self.torpedo_segment_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-        self.torpedo_segment_2.top = (( self.screen_height / 5 ) * 4 ) - 15
+        self.torpedo_segment_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
+        self.torpedo_segment_2.top = (( self.screen_height / 6 ) * 4 ) - 2
         self.all_sprites.append(self.torpedo_segment_2)
 
         self.torpedo_segment_3 = ToggleSprite("assets/torpedo_segment_3_inactive.png", SCALING)
         self.torpedo_segment_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-        self.torpedo_segment_3.top = (( self.screen_height / 5 ) * 4 ) - 15
+        self.torpedo_segment_3.top = (( self.screen_height / 6 ) * 4 ) - 2
         self.all_sprites.append(self.torpedo_segment_3)
 
         self.heart_1 = ToggleSprite("assets/heart_full.png", SCALING)
         self.heart_1.is_active = True
         self.heart_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*2)
-        self.heart_1.top = ( self.screen_height / 5 ) * 5 - 10
+        self.heart_1.top = ( self.screen_height / 6 ) * 6 - 10
         self.all_sprites.append(self.heart_1)
 
         self.heart_2 = ToggleSprite("assets/heart_full.png", SCALING)
         self.heart_2.is_active = True
         self.heart_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*4)
-        self.heart_2.top = ( self.screen_height / 5 ) * 5 - 10
+        self.heart_2.top = ( self.screen_height / 6 ) * 6 - 10
         self.all_sprites.append(self.heart_2)
 
         # island_positions = [14, 10, 15, 11, 24, 20, 1, 27, 2, 24, 16, 12, 16, 7, 16, 9, 16, 30, 15, 10, 20, 7, 24, 19, 12, 24, 30, 7, 24, 30, 3, 16, 22, 3, 10, 6, 24, 30, 10, 11, 19, 6, 16, 30, 8, 1, 23, 23, 27, 23, 30, 1, 4, 27, 13, 18, 9, 26, 16, 15, 29, 13, 28, 25, 27, 23, 5, 1, 6, 30, 28, 29, 23, 2, 21, 27, 24, 7, 14, 27, 11, 2, 6, 15, 11, 3, 13, 13, 19, 30, 10, 17, 25, 19, 3, 13, 28, 6, 11, 28, 3, 7, 14, 27, 26, 29, 24, 10, 15, 28, 5, 5, 18, 4, 16, 4, 7, 23, 12, 12, 8, 13, 3, 8, 9, 5, 10, 17, 1, 8, 15, 22, 24, 22, 17, 19, 23, 4, 2, 6, 5, 27, 12, 29, 20, 24, 12, 16, 8, 30, 17, 6, 28, 5, 16, 15, 16, 15, 11, 18, 23, 9, 29, 12, 1, 4, 6, 27, 9, 2, 23, 15, 23, 30, 1, 3, 13, 8, 24, 18, 3, 10, 6, 18, 17, 23, 19, 3, 10, 6, 15, 29, 1, 28, 29, 10, 24, 11, 26, 10, 19, 11, 3, 25, 28, 20, 30, 7, 11, 4, 26, 15, 10, 25, 4, 22, 3, 14, 30, 20, 14, 6, 3, 8, 6, 27, 16, 7, 17, 1, 20, 10, 13, 30, 10, 26, 12, 30, 11, 26, 30, 1, 16, 15, 21, 1, 20, 26, 30, 16, 3, 2, 7, 12, 10, 29, 16, 20, 22, 10, 26, 20, 11, 5, 21, 11, 29, 25, 8, 6, 26, 21, 2, 26, 16, 14, 21, 9, 25, 14, 5, 20, 22, 1, 26, 9, 8, 11, 13, 5, 3, 28, 27, 18, 25, 18, 10, 14, 13, 22, 29, 12, 26, 8, 9, 9, 13, 11, 6, 16, 1, 16, 6, 16, 7, 1, 29, 12, 16, 28, 12, 4, 27, 10, 18, 21, 8, 15, 21, 30, 24, 14, 26, 8, 29, 20, 13, 23, 15, 30, 8, 3, 21, 2, 6, 12, 15, 25, 30, 29, 30, 13, 2, 1, 30, 3, 1, 16, 22, 29, 30, 21, 3, 14, 5, 2, 21, 4, 6, 23, 4, 16, 17, 26, 27, 1, 27, 3, 29, 5, 1, 26, 9, 7, 22, 7, 6, 13, 16, 4, 26, 5, 23, 15, 20, 30, 16, 14, 1, 15]
@@ -182,9 +182,6 @@ class RedOctoberGame(a.Window):
 
         # schedule the reactor tick to continually tick up 
         a.schedule(self._tick_reactor, REACTOR_TICK_TIME)
-
-        # schedule the torpedo tick to continually tick up 
-        a.schedule(self._tick_torpedo, TORPEDO_TICK_TIME)
 
     def on_update(self, delta_time : float):
     # handle victory
@@ -339,7 +336,7 @@ class RedOctoberGame(a.Window):
                     self.north_button.kill()
                     self.north_button = a.Sprite("assets/north_active.png", SCALING)
                     self.north_button.center_x = SCREEN_WIDTH + ( (SCREEN_WIDTH // 2) / 2)
-                    self.north_button.top = ( self.screen_height / 5 ) * 3
+                    self.north_button.top = ( self.screen_height / 6 ) * 3
                     self.all_sprites.append(self.north_button)
 
             # if SOUTH 
@@ -356,7 +353,7 @@ class RedOctoberGame(a.Window):
                     self.south_button.kill()
                     self.south_button = a.Sprite("assets/south_active.png", SCALING)
                     self.south_button.center_x = SCREEN_WIDTH + ( (SCREEN_WIDTH // 2) / 2)
-                    self.south_button.bottom = ( self.screen_height / 5 ) * 1
+                    self.south_button.bottom = ( self.screen_height / 6 ) * 1
                     self.all_sprites.append(self.south_button)
 
             # if WEST 
@@ -373,7 +370,7 @@ class RedOctoberGame(a.Window):
                     self.west_button.kill()
                     self.west_button = a.Sprite("assets/west_active.png", SCALING)
                     self.west_button.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
-                    self.west_button.center_y = ( self.screen_height / 5 ) * 2
+                    self.west_button.center_y = ( self.screen_height / 6 ) * 2
                     self.all_sprites.append(self.west_button)
 
             # if EAST
@@ -390,27 +387,31 @@ class RedOctoberGame(a.Window):
                     self.east_button.kill()
                     self.east_button = a.Sprite("assets/east_active.png", SCALING)
                     self.east_button.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-                    self.east_button.center_y = ( self.screen_height / 5 ) * 2
+                    self.east_button.center_y = ( self.screen_height / 6 ) * 2
                     self.all_sprites.append(self.east_button)
             
             # if FIRE
             elif self.fire.collides_with_point((x,y)):
-                self.white_sub.is_move_selected = True
-                self.white_sub.selected_move = "f"
-                    
-                #change out sprite
-                self.fire.kill()
-                self.fire = a.Sprite("assets/fire_active.png", SCALING)
-                self.fire.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
-                self.fire.center_y = ( self.screen_height / 5 ) * 2
-                self.all_sprites.append(self.fire)
+                # if all torpedo segments are active
+                if self.torpedo_segment_1.is_active and self.torpedo_segment_2.is_active and self.torpedo_segment_3.is_active: 
+                    self.white_sub.is_move_selected = True
+                    self.white_sub.selected_move = "f"
+                        
+                    #change out sprite
+                    self.fire.kill()
+                    self.fire = a.Sprite("assets/fire_active.png", SCALING)
+                    self.fire.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
+                    self.fire.center_y = ( self.screen_height / 6 ) * 2
+                    self.all_sprites.append(self.fire)
             
         # if MARK!
         if self.mark.collides_with_point((x,y)):
             if self.white_sub.is_move_selected:
                 
                 # NORTH 
-                if self.white_sub.selected_move == "n":#if you want to require a reactor... and self.nuclear_1.is_active:
+                if self.white_sub.selected_move == "n" and self.nuclear_1.is_active:
+                    self._tick_and_update_torpedo()
+
                     self.white_sub.did_move = True
                     self.white_sub.is_move_selected = False #maybe change this to be in the update section
                     self.white_sub.selected_move = ""
@@ -422,11 +423,13 @@ class RedOctoberGame(a.Window):
                     self.north_button.kill()
                     self.north_button = a.Sprite("assets/north.png", SCALING)
                     self.north_button.center_x = SCREEN_WIDTH + ( (SCREEN_WIDTH // 2) / 2)
-                    self.north_button.top = ( self.screen_height / 5 ) * 3
+                    self.north_button.top = ( self.screen_height / 6 ) * 3
                     self.all_sprites.append(self.north_button)
 
                 # SOUTH 
-                elif self.white_sub.selected_move == "s":#if you want to require a reactor... and self.nuclear_1.is_active:
+                elif self.white_sub.selected_move == "s" and self.nuclear_1.is_active:
+                    self._tick_and_update_torpedo()
+
                     self.white_sub.did_move = True
                     self.white_sub.is_move_selected = False #maybe change this to be in the update section
                     self.white_sub.selected_move = ""
@@ -438,11 +441,13 @@ class RedOctoberGame(a.Window):
                     self.south_button.kill()
                     self.south_button = a.Sprite("assets/south.png", SCALING)
                     self.south_button.center_x = SCREEN_WIDTH + ( (SCREEN_WIDTH // 2) / 2)
-                    self.south_button.bottom = ( self.screen_height / 5 ) * 1
+                    self.south_button.bottom = ( self.screen_height / 6 ) * 1
                     self.all_sprites.append(self.south_button)
 
                 # WEST 
-                elif self.white_sub.selected_move == "w":#if you want to require a reactor... and self.nuclear_1.is_active:
+                elif self.white_sub.selected_move == "w" and self.nuclear_1.is_active:
+                    self._tick_and_update_torpedo()
+
                     self.white_sub.did_move = True
                     self.white_sub.is_move_selected = False #maybe change this to be in the update section
                     self.white_sub.selected_move = ""
@@ -454,11 +459,13 @@ class RedOctoberGame(a.Window):
                     self.west_button.kill()
                     self.west_button = a.Sprite("assets/west.png", SCALING)
                     self.west_button.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
-                    self.west_button.center_y = ( self.screen_height / 5 ) * 2
+                    self.west_button.center_y = ( self.screen_height / 6 ) * 2
                     self.all_sprites.append(self.west_button)
 
                 # EAST 
-                elif self.white_sub.selected_move == "e":#if you want to require a reactor INCLUDE... and self.nuclear_1.is_active:
+                elif self.white_sub.selected_move == "e" and self.nuclear_1.is_active:
+                    self._tick_and_update_torpedo()
+
                     self.white_sub.did_move = True
                     self.white_sub.is_move_selected = False #maybe change this to be in the update section
                     self.white_sub.selected_move = ""
@@ -470,12 +477,15 @@ class RedOctoberGame(a.Window):
                     self.east_button.kill()
                     self.east_button = a.Sprite("assets/east.png", SCALING)
                     self.east_button.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-                    self.east_button.center_y = ( self.screen_height / 5 ) * 2
+                    self.east_button.center_y = ( self.screen_height / 6 ) * 2
                     self.all_sprites.append(self.east_button)
 
                 # FIRE: 3 nuclear reactors must be active (only if that section is uncommented) and fire must be selected to fire a torpedo
                 elif self.white_sub.selected_move == "f":
                     # if self.nuclear_1.is_active and self.nuclear_2.is_active and self.nuclear_3.is_active: # INCLUDE if you want to require reactors... 
+                    
+                        self._clear_torpedo_and_tick() # reset torpedo
+
                         self.white_sub.did_move = True
                         self.white_sub.is_move_selected = False #maybe change this to be in the update section
                         self.white_sub.selected_move = ""
@@ -485,7 +495,7 @@ class RedOctoberGame(a.Window):
                         self.fire.kill()
                         self.fire = a.Sprite("assets/fire.png", SCALING)
                         self.fire.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
-                        self.fire.center_y = ( self.screen_height / 5 ) * 2
+                        self.fire.center_y = ( self.screen_height / 6 ) * 2
                         self.all_sprites.append(self.fire)
 
     def _place_marker(self):
@@ -498,8 +508,101 @@ class RedOctoberGame(a.Window):
     def _tick_reactor(self, delta_time):
         self.reactor_tick += 1
 
-    def _tick_torpedo(self, delta_time):
+    def _tick_and_update_torpedo(self):
+        # increase torpedo tick
+        
         self.torpedo_tick += 1
+        
+        # change out sprites according to torpedo_tick
+
+        if self.torpedo_tick == 1:
+            self.torpedo_segment_1.kill()
+            self.torpedo_segment_1 = ToggleSprite("assets/torpedo_segment_1_active.png", SCALING)
+            self.torpedo_segment_1.is_active = True
+            self.torpedo_segment_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
+            self.torpedo_segment_1.top = (( self.screen_height / 6 ) * 4 )
+            self.all_sprites.append(self.torpedo_segment_1)
+
+            self.torpedo_segment_2.kill()
+            self.torpedo_segment_2 = ToggleSprite("assets/torpedo_segment_2_inactive.png", SCALING)
+            self.torpedo_segment_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
+            self.torpedo_segment_2.top = (( self.screen_height / 6 ) * 4 ) - 2
+            self.all_sprites.append(self.torpedo_segment_2)
+
+            self.torpedo_segment_3.kill()
+            self.torpedo_segment_3 = ToggleSprite("assets/torpedo_segment_3_inactive.png", SCALING)
+            self.torpedo_segment_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
+            self.torpedo_segment_3.top = (( self.screen_height / 6 ) * 4 ) - 2
+            self.all_sprites.append(self.torpedo_segment_3)
+
+
+        elif self.torpedo_tick == 2:
+            self.torpedo_segment_1.kill()
+            self.torpedo_segment_1 = ToggleSprite("assets/torpedo_segment_1_active.png", SCALING)
+            self.torpedo_segment_1.is_active = True
+            self.torpedo_segment_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
+            self.torpedo_segment_1.top = (( self.screen_height / 6 ) * 4 )
+            self.all_sprites.append(self.torpedo_segment_1)
+
+            self.torpedo_segment_2.kill()
+            self.torpedo_segment_2 = ToggleSprite("assets/torpedo_segment_2_active.png", SCALING)
+            self.torpedo_segment_2.is_active = True
+            self.torpedo_segment_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
+            self.torpedo_segment_2.top = (( self.screen_height / 6 ) * 4 ) - 2
+            self.all_sprites.append(self.torpedo_segment_2)
+
+            self.torpedo_segment_3.kill()
+            self.torpedo_segment_3 = ToggleSprite("assets/torpedo_segment_3_inactive.png", SCALING)
+            self.torpedo_segment_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
+            self.torpedo_segment_3.top = (( self.screen_height / 6 ) * 4 ) - 2
+            self.all_sprites.append(self.torpedo_segment_3)
+            
+        elif self.torpedo_tick == 3:
+            self.torpedo_segment_1.kill()
+            self.torpedo_segment_1 = ToggleSprite("assets/torpedo_segment_1_active.png", SCALING)
+            self.torpedo_segment_1.is_active = True
+            self.torpedo_segment_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
+            self.torpedo_segment_1.top = (( self.screen_height / 6 ) * 4 )
+            self.all_sprites.append(self.torpedo_segment_1)
+
+            self.torpedo_segment_2.kill()
+            self.torpedo_segment_2 = ToggleSprite("assets/torpedo_segment_2_active.png", SCALING)
+            self.torpedo_segment_2.is_active = True
+            self.torpedo_segment_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
+            self.torpedo_segment_2.top = (( self.screen_height / 6 ) * 4 ) - 2
+            self.all_sprites.append(self.torpedo_segment_2)
+
+            self.torpedo_segment_3.kill()
+            self.torpedo_segment_3 = ToggleSprite("assets/torpedo_segment_3_active.png", SCALING)
+            self.torpedo_segment_3.is_active = True
+            self.torpedo_segment_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
+            self.torpedo_segment_3.top = (( self.screen_height / 6 ) * 4 ) - 2
+            self.all_sprites.append(self.torpedo_segment_3)
+            
+    
+    def _clear_torpedo_and_tick(self):
+        # reset tick and sprites
+        
+        self.torpedo_tick = 0
+
+        self.torpedo_segment_1.kill()
+        self.torpedo_segment_1 = ToggleSprite("assets/torpedo_segment_1_inactive.png", SCALING)
+        self.torpedo_segment_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
+        self.torpedo_segment_1.top = (( self.screen_height / 6 ) * 4 )
+        self.all_sprites.append(self.torpedo_segment_1)
+
+        self.torpedo_segment_2.kill()
+        self.torpedo_segment_2 = ToggleSprite("assets/torpedo_segment_2_inactive.png", SCALING)
+        self.torpedo_segment_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
+        self.torpedo_segment_2.top = (( self.screen_height / 6 ) * 4 ) - 2
+        self.all_sprites.append(self.torpedo_segment_2)
+
+        self.torpedo_segment_3.kill()
+        self.torpedo_segment_3 = ToggleSprite("assets/torpedo_segment_3_inactive.png", SCALING)
+        self.torpedo_segment_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
+        self.torpedo_segment_3.top = (( self.screen_height / 6 ) * 4 ) - 2
+        self.all_sprites.append(self.torpedo_segment_3)
+
 
     def _update_reactor_from_tick(self):
         # get the timer tick
@@ -511,19 +614,19 @@ class RedOctoberGame(a.Window):
             self.nuclear_1.kill()
             self.nuclear_1 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
-            self.nuclear_1.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_1.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_1)
 
             self.nuclear_2.kill()
             self.nuclear_2 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
-            self.nuclear_2.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_2.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_2)
 
             self.nuclear_3.kill()
             self.nuclear_3 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-            self.nuclear_3.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_3.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_3)
         
         elif tick == 1:
@@ -533,19 +636,19 @@ class RedOctoberGame(a.Window):
             self.nuclear_1 = ToggleSprite("assets/nuclear_active.png", SCALING)
             self.nuclear_1.is_active = True
             self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
-            self.nuclear_1.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_1.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_1)
 
             self.nuclear_2.kill()
             self.nuclear_2 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
-            self.nuclear_2.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_2.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_2)
 
             self.nuclear_3.kill()
             self.nuclear_3 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-            self.nuclear_3.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_3.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_3)
         
         elif tick == 2:
@@ -555,20 +658,20 @@ class RedOctoberGame(a.Window):
             self.nuclear_1 = ToggleSprite("assets/nuclear_active.png", SCALING)
             self.nuclear_1.is_active = True
             self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
-            self.nuclear_1.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_1.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_1)
 
             self.nuclear_2.kill()
             self.nuclear_2 = ToggleSprite("assets/nuclear_active.png", SCALING)
             self.nuclear_2.is_active = True
             self.nuclear_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
-            self.nuclear_2.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_2.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_2)
 
             self.nuclear_3.kill()
             self.nuclear_3 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-            self.nuclear_3.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_3.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_3)
         
         elif tick == 3:
@@ -578,21 +681,21 @@ class RedOctoberGame(a.Window):
             self.nuclear_1 = ToggleSprite("assets/nuclear_active.png", SCALING)
             self.nuclear_1.is_active = True
             self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
-            self.nuclear_1.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_1.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_1)
 
             self.nuclear_2.kill()
             self.nuclear_2 = ToggleSprite("assets/nuclear_active.png", SCALING)
             self.nuclear_2.is_active = True
             self.nuclear_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
-            self.nuclear_2.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_2.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_2)
 
             self.nuclear_3.kill()
             self.nuclear_3 = ToggleSprite("assets/nuclear_active.png", SCALING)
             self.nuclear_3.is_active = True
             self.nuclear_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-            self.nuclear_3.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_3.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_3)
         
         elif tick > 3:
@@ -601,19 +704,19 @@ class RedOctoberGame(a.Window):
             self.nuclear_1.kill()
             self.nuclear_1 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
-            self.nuclear_1.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_1.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_1)
 
             self.nuclear_2.kill()
             self.nuclear_2 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*2)
-            self.nuclear_2.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_2.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_2)
 
             self.nuclear_3.kill()
             self.nuclear_3 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
             self.nuclear_3.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*3)
-            self.nuclear_3.top = ( self.screen_height / 5 ) * 4
+            self.nuclear_3.top = (( self.screen_height / 6 ) * 5 )
             self.all_sprites.append(self.nuclear_3)
 
             # reset the timer tick
@@ -621,8 +724,8 @@ class RedOctoberGame(a.Window):
             self.reactor_tick = 0
 
             # take a damage
-
-            self._take_damage()
+            if TAKE_REACTOR_DAMAGE:
+                self._take_damage()
     
 
     def _clear_reactors_and_tick(self):
@@ -631,7 +734,7 @@ class RedOctoberGame(a.Window):
         self.nuclear_1.kill()
         self.nuclear_1 = ToggleSprite("assets/nuclear_inactive.png", SCALING)
         self.nuclear_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 4)*1)
-        self.nuclear_1.top = ( self.screen_height / 5 ) * 4
+        self.nuclear_1.top = (( self.screen_height / 6 ) * 5 )
         self.all_sprites.append(self.nuclear_1)
 
         self.nuclear_2.kill()
@@ -660,14 +763,14 @@ class RedOctoberGame(a.Window):
                 self.heart_1 = ToggleSprite("assets/heart_full.png", SCALING)
                 self.heart_1.is_active = True
                 self.heart_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*2)
-                self.heart_1.top = ( self.screen_height / 5 ) * 5 - 10
+                self.heart_1.top = ( self.screen_height / 6 ) * 6 - 10
                 self.all_sprites.append(self.heart_1)
 
                 self.heart_2.kill()
                 self.heart_2 = ToggleSprite("assets/heart_empty.png", SCALING)
                 self.heart_2.is_active = False
                 self.heart_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*4)
-                self.heart_2.top = ( self.screen_height / 5 ) * 5 - 10
+                self.heart_2.top = ( self.screen_height / 6 ) * 6 - 10
                 self.all_sprites.append(self.heart_2)
             elif self.heart_1.is_active:
                 #change out heart sprites
@@ -676,14 +779,14 @@ class RedOctoberGame(a.Window):
                 self.heart_1 = ToggleSprite("assets/heart_empty.png", SCALING)
                 self.heart_1.is_active = False
                 self.heart_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*2)
-                self.heart_1.top = ( self.screen_height / 5 ) * 5 - 10
+                self.heart_1.top = ( self.screen_height / 6 ) * 6 - 10
                 self.all_sprites.append(self.heart_1)
 
                 self.heart_2.kill()
                 self.heart_2 = ToggleSprite("assets/heart_empty.png", SCALING)
                 self.heart_2.is_active = False
                 self.heart_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*4)
-                self.heart_2.top = ( self.screen_height / 5 ) * 5 - 10
+                self.heart_2.top = ( self.screen_height / 6 ) * 6 - 10
                 self.all_sprites.append(self.heart_2)
 
                 # destroy white sub 
@@ -697,14 +800,14 @@ class RedOctoberGame(a.Window):
             self.heart_1 = ToggleSprite("assets/heart_empty.png", SCALING)
             self.heart_1.is_active = False
             self.heart_1.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*2)
-            self.heart_1.top = ( self.screen_height / 5 ) * 5 - 10
+            self.heart_1.top = ( self.screen_height / 6 ) * 6 - 10
             self.all_sprites.append(self.heart_1)
 
             self.heart_2.kill()
             self.heart_2 = ToggleSprite("assets/heart_empty.png", SCALING)
             self.heart_2.is_active = False
             self.heart_2.center_x = SCREEN_WIDTH + (((SCREEN_WIDTH // 2) / 6)*4)
-            self.heart_2.top = ( self.screen_height / 5 ) * 5 - 10
+            self.heart_2.top = ( self.screen_height / 6 ) * 6 - 10
             self.all_sprites.append(self.heart_2)
 
             # destroy white sub 
