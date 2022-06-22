@@ -24,10 +24,12 @@ class RadioOpperator(th.Thread):
                 while self.is_listening:
                     # used code from https://www.geeksforgeeks.org/python-interconversion-between-dictionary-and-bytes/
                     data = cs.recv(115)
-                    # print(f"RADIO -- size: {data.__sizeof__()} - data: ", end="")
+                    if SHOW_RADIO:
+                        print(f"RADIO -- size: {data.__sizeof__()} - data: ", end="")
                     data = data.decode(encoding="utf8")
                     data = json.loads(data)
-                    # print(f"{data}")
+                    if SHOW_RADIO:
+                        print(f"{data}")
                     if data["position"] == "READY": # first time (readying up)...
                         self.is_other_player_ready = True
                     else: # usual procedure...

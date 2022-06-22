@@ -24,38 +24,46 @@ Here is a demonstration of the software.
 
 # Network Communication
 
-{Describe the architecture that you used (client/server or peer-to-peer)}
-
-I used a peer to peer format for the networking side of this program
+I used a **peer to peer** with **TCP** format for the networking side of this program. Each computer runs a server socket and a client socket. The server socket runs on a separate thread (`RadioOpperator` class) and is bound to **port 1500**. The client socket is within the `RedOctoberGame` class and is bound to **port 1501** and connects to port 1500 on the other computer. See a visual guide below on the peer to peer setup...
 
 <img src="https://github.com/mbower00/The-Hunt-for-Red-October-Arcade/blob/master/assets/socket_visual.png" width="360" height="180" alt="Visual showing the peer to peer connection. Can be found here: https://github.com/mbower00/The-Hunt-for-Red-October-Arcade/blob/master/assets/socket_visual.png">
 
-{Identify if you are using TCP or UDP and what port numbers are used.}
+The messages sent between the computers are in the format of a JSON string encoded to bytes. Here is an example of a message that might be sent:
 
-{Identify the format of messages being sent between the client and server or the messages sent between two peers.}
+`{'position': [250.0, 190.0], 'move_log': [0, 20.0], 'torpedo_position': None}`
+
+If we just received this, we could tell a number of things about our opponent...
+* The opponent just moved North
+    * From a positive value in the *y* position for the value of `'move_log'`
+* The opponent is at coordinate: `[250.0, 190.0]`
+    * From the value of `'position'` 
+* The opponent did not fire a torpedo
+    * From the value of `'torpedo_position'` is `None`)
+
+ {Identify the format of messages being sent between the client and server or the messages sent between two peers.}
 
 # Development Environment
 
 ## Tools
 
-* *Visual Studio Code* - A code editor with extensions that I used
-* *Aseprite* - A pixel art engine
-* *Coolors* - A color palette generator 
+* **Visual Studio Code** - A code editor with extensions that I used
+* **Aseprite** - A pixel art engine
+* **Coolors** - A color palette generator 
 
 ## Language 
 
-* *Python* - I used the Python programming language for this project. Python is a language that has many libraries which helped me in the development of this software.
-* *Markdown* 
+* **Python** - I used the Python programming language for this project. Python is a language that has many libraries which helped me in the development of this software.
+* **Markdown** 
 
 ## Libraries
 
-* *arcade* - A game framework which has, among other things, the capability of pulling up a window with images that can move around.
-* *socket* - A helpful library for providing a connection between two computers
-* *threading* - A helpful library that I used to create a thread for a socket, so that it can be run apart from the main program. I used it to create a lock. 
-* *json* - a helpful library for JSON and the conversion from a Python Dictionary to JSON.
-* *random* - helpful for getting numbers
-* *dataclasses* - Not sure if I am/need to be using this, but I pip installed it as part of an [Arcade tutorial](https://realpython.com/arcade-python-game-framework/)
-* *PyObjC arcade* - Not sure if I am/need to be using this, but I pip installed it as part of an [Arcade tutorial](https://realpython.com/arcade-python-game-framework/)
+* **arcade** - A game framework which has, among other things, the capability of pulling up a window with images that can move around.
+* **socket** - A helpful library for providing a connection between two computers
+* **threading** - A helpful library that I used to create a thread for a socket, so that it can be run apart from the main program. I used it to create a lock. 
+* **json** - a helpful library for JSON and the conversion from a Python Dictionary to JSON.
+* **random** - helpful for getting numbers
+* **dataclasses** - Not sure if I am/need to be using this, but I pip installed it as part of an [Arcade tutorial](https://realpython.com/arcade-python-game-framework/)
+* **PyObjC arcade** - Not sure if I am/need to be using this, but I pip installed it as part of an [Arcade tutorial](https://realpython.com/arcade-python-game-framework/)
 
 # Useful Websites
 
