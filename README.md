@@ -2,15 +2,35 @@
 
 ## Purpose
 
-{Describe your purpose for writing this software.}
+My purpose in developing this software is to practice using different libraries together (e.g `threading`, `socket`, `arcade`). I wanted to learn how to create a peer to peer connection. I also wanted to learn how to use the Python Arcade game framework. I also wanted to make a digital version-of-sorts of the board game Captain Sonar ([rules](https://www.matagot.com/IMG/pdf/SONAR_RULES_EN_lr.pdf))
 
-## Networking
+## Description
 
-{Provide a description the networking program that you wrote. Describe how to use your software.  If you did Client/Server, then you will need to describe how to start both.}
+This is a digital version-of-sorts of the board game Captain Sonar, an realtime game of submarine warfare ([rules](https://www.matagot.com/IMG/pdf/SONAR_RULES_EN_lr.pdf)). It is to be run on two computers. It uses a peer to peer connection to send and receive information about actions that the submarines are taking. 
 
-## Game Framework
+*NOTE: I have a **white** and a **black** computer that I used in developing and testing this software. There will be references to **white**/**black** on this page. Those computers are what I am referring to*
 
-{Provide a description the game that you wrote. Describe how to play your game.}
+## How to Run
+
+On both the white and black computer:
+
+* Run main.py
+* You will see this prompt: `white or black computer? [w, b] > `
+* Enter: `w` for white or `b` for black
+* Click the new window that opens
+* You might have to wait a little bit
+
+### Error the Terminal when Attempting to Run?
+
+On both the white and black computer try this:
+
+* Trash the terminal and exit the game window
+* Wait a little while
+* Then retry running
+
+## How to Play
+
+<how to play here>
 
 ## Demo
 
@@ -39,8 +59,6 @@ If we just received this, we could tell a number of things about our opponent...
     * From the value of `'position'` 
 * The opponent did not fire a torpedo
     * From the value of `'torpedo_position'` is `None`)
-
- {Identify the format of messages being sent between the client and server or the messages sent between two peers.}
 
 # Development Environment
 
@@ -94,6 +112,8 @@ If we just received this, we could tell a number of things about our opponent...
 * [markdownguide](https://www.markdownguide.org/cheat-sheet/)
 * [markdownguide](https://www.markdownguide.org/basic-syntax/#images-1)
 * [markdownguide](https://www.markdownguide.org/hacks/#image-size)
+* [SONAR_RULES (not name of site)](https://www.matagot.com/IMG/pdf/SONAR_RULES_EN_lr.pdf)
+* [wikipedia](https://en.wikipedia.org/wiki/Torpedo#/media/File:Mark_8_torpedo_in_Germanton_Park.jpg)
 
 # Future Work
 

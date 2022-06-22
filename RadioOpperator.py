@@ -1,3 +1,5 @@
+# used socket code from https://realpython.com/python-sockets/
+
 import json
 import threading as th
 import socket as so

@@ -1,3 +1,6 @@
+# used socket code and info from https://realpython.com/python-sockets/
+# used arcade code and info from https://realpython.com/arcade-python-game-framework/ 
+
 import random
 import arcade as a
 import socket as so
@@ -11,6 +14,12 @@ from SubmarineSprite import SubmarineSprite
 
 class RedOctoberGame(a.Window):
     def __init__(self, ip, enemy_ip):
+        """RedOctoberGame class constructor
+
+        Args:
+            ip (str): ip of this computer
+            enemy_ip (str): ip of the other computer
+        """
         self.screen_width = SCREEN_WIDTH + (SCREEN_WIDTH // 2)
         self.screen_height = SCREEN_HEIGHT
         super().__init__(self.screen_width, self.screen_height, SCREEN_TITLE)
@@ -28,6 +37,8 @@ class RedOctoberGame(a.Window):
         self.torpedo_tick = 0
 
     def setup(self):
+        """sets up the RedOctoberGame for play. Run before .run()
+        """
         a.set_background_color(a.color_from_hex_string(PALETTE_BLUE.upper()))
 
         self.mark = a.Sprite("assets/mark.png", SCALING)
@@ -181,6 +192,8 @@ class RedOctoberGame(a.Window):
         a.schedule(self._tick_reactor, REACTOR_TICK_TIME)
 
     def on_update(self, delta_time : float):
+        """Occurs during the update stage of the RedOctoberGame
+        """
     # handle victory
         with self.lock:
             if self.radio_opperator.is_victory:
@@ -291,6 +304,9 @@ class RedOctoberGame(a.Window):
                     self.white_sub.did_move = False
 
     def on_draw(self):
+        """Occurs during the drawing stage of RedOctoberGame.
+        Will draw all the sprites in all_sprites as well as a border between the control panel and the play area.
+        """
         a.start_render()
         #draw the sprites
         self.all_sprites.draw()
@@ -299,6 +315,8 @@ class RedOctoberGame(a.Window):
         a.draw_lrtb_rectangle_filled(SCREEN_WIDTH, SCREEN_WIDTH + 10, SCREEN_HEIGHT, 0, a.color_from_hex_string(PALETTE_WHITE.upper()))
 
     def on_key_release(self, symbol: int, modifiers: int):
+        """Handles the pressing of the UP, DOWN, LEFT, RIGHT, W, A, S, and D keys for the moving of the red trail and mark.
+        """
         if symbol == a.key.UP or symbol == a.key.W:
             for i in self.red_trail_sprites:
                 i.change_y = 10 * SCALING
@@ -313,6 +331,12 @@ class RedOctoberGame(a.Window):
                 i.change_x = 10 * SCALING
     
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
+        """Handles the clicking of the N, S, E, W CROSSHAIR, and MARK! buttons for controlling the submarine
+
+        Args:
+            x (int): mouse x position on click
+            y (int): mouse y position on click
+        """
         if not self.white_sub.is_move_selected:
             # if NORTH
             amount_will_move = 10 * SCALING
@@ -496,6 +520,7 @@ class RedOctoberGame(a.Window):
                         self.all_sprites.append(self.fire)
 
     def _place_marker(self):
+        """Places a small white marker sprite on the white sub's position"""
         marker = a.Sprite("assets/whiteMarkSmall.png", SCALING)
         marker.center_x = self.white_sub.center_x
         marker.center_y = self.white_sub.center_y
@@ -503,9 +528,15 @@ class RedOctoberGame(a.Window):
         self.white_trail_sprites.append(marker)
 
     def _tick_reactor(self, delta_time):
+        """Increments the reactor_tick member variable by 1
+        """
         self.reactor_tick += 1
 
     def _tick_and_update_torpedo(self):
+        """Increments the torpedo_tick member variable by 1
+        AND
+        Changes the sprites of the torpedo meter, based on the tick, if needed
+        """
         # increase torpedo tick
         
         self.torpedo_tick += 1
@@ -578,7 +609,8 @@ class RedOctoberGame(a.Window):
             
     
     def _clear_torpedo_and_tick(self):
-        # reset tick and sprites
+        """resets torpedo_tick member variable (to 0) and sprites (to inactive)
+        """
         
         self.torpedo_tick = 0
 
@@ -602,6 +634,10 @@ class RedOctoberGame(a.Window):
 
 
     def _update_reactor_from_tick(self):
+        """Changes out the reactor sprites to represent the current value reactor_tick member variable.
+        If the reactor_tick is greater that 3, it will reset to 0 and the sub will take damage.
+        """
+
         # get the timer tick
         tick = self.reactor_tick
         
@@ -726,6 +762,9 @@ class RedOctoberGame(a.Window):
     
 
     def _clear_reactors_and_tick(self):
+        """resets reactor_tick member variable (to 0) and sprites (to inactive)
+        """
+
         # change out nuclear sprites
 
         self.nuclear_1.kill()
@@ -752,6 +791,12 @@ class RedOctoberGame(a.Window):
     
 
     def _take_damage(self, amount=1):
+        """Damages the white sub by changing out the heart(s) sprites from full to empty.
+        If it loses all of its hearts, it will toggle the is_destroyed member variable of the white sub to True.
+
+        Args:
+            amount (int, optional): The amount of damage to take, anything above 1 will result in the loss of all hearts. Defaults to 1.
+        """
         if amount == 1:
             if self.heart_2.is_active:
                 #change out heart sprites
@@ -813,6 +858,8 @@ class RedOctoberGame(a.Window):
 
 
     def on_close(self):
+        """override of the a.Window (a is arcade) on_close method
+        """
         super().on_close()
         self.sending_socket.close()
         self.radio_opperator.is_listening = False
