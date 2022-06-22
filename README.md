@@ -30,7 +30,7 @@ I used a peer to peer format for the networking side of this program
 
 
 
-<img src="https://github.com/mbower00/The-Hunt-for-Red-October-Arcade/blob/master/assets/socket_visual.png" width="220" height="120">
+<img src="https://github.com/mbower00/The-Hunt-for-Red-October-Arcade/blob/master/assets/socket_visual.png" width="360" height="180">
 
 {Identify if you are using TCP or UDP and what port numbers are used.}
 
