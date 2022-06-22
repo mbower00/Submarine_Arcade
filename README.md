@@ -30,6 +30,8 @@ I used a peer to peer format for the networking side of this program
 
 ![Peer to Peer Connection Visual](https://github.com/mbower00/The-Hunt-for-Red-October-Arcade/blob/master/assets/socket_visual.png)
 
+<img src="https://github.com/mbower00/The-Hunt-for-Red-October-Arcade/blob/master/assets/socket_visual.png" width="420" height="120">
+
 {Identify if you are using TCP or UDP and what port numbers are used.}
 
 {Identify the format of messages being sent between the client and server or the messages sent between two peers.}
@@ -83,6 +85,8 @@ I used a peer to peer format for the networking side of this program
 * [tutorialspoint](https://www.tutorialspoint.com/Peer-to-Peer-Computing)
 * [mathcs](https://www.mathcs.emory.edu/~valerie/courses/fall10/155/resources/op_precedence.html)
 * [markdownguide](https://www.markdownguide.org/cheat-sheet/)
+* [markdownguide](https://www.markdownguide.org/basic-syntax/#images-1)
+* [markdownguide](https://www.markdownguide.org/hacks/#image-size)
 
 # Future Work
 
