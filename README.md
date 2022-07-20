@@ -31,6 +31,7 @@ On both the white and black computer try this:
 ## How to Play
 
 <how to play here>
+<ALSO, know what all the sockets section is doing before submit!>
 
 ## Demo
 
