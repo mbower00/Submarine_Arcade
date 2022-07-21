@@ -3,7 +3,7 @@ SERVER_PORT = 1500
 CLIENT_PORT = 1501
 
 # IP for the black computer
-BLACK_IP = "192.168.29.32"
+BLACK_IP = "172.20.10.14"
 
 # IP for the white computer
 WHITE_IP = "172.20.10.13"

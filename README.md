@@ -30,18 +30,43 @@ On both the white and black computer try this:
 
 ## How to Play
 
-<how to play here>
-<ALSO, know what all the sockets section is doing before submit!>
+### Objective
+
+You must be the last sub alive (i.e. with at least one heart).
+
+You can take damage from the reactor overheating, or from getting hit by a torpedo.
+
+### Radio and Targeting
+
+The red mark and trail show the movement of the enemy. You may use W, A, S, D or UP, DOWN, LEFT, RIGHT keys to move the red mark + trail. You want to use the knowledge of where they have been to try to line up where they are.
+
+If you choose to fire a torpodo, **it will fire at the red mark**.
+
+### Torpedo
+
+To fire a torpedo, select the **crosshair button** and then select **MARK!**.
+
+Your sub can fire a torpedo at the ememy, damaging them. If you hit around them (i.e. one spot in the N, S, E, W, NE, SE, SW, or NW direction), then you deal one heart of damage. If you hit them at their location, then you deal two hearts of damage.
+
+### Movement and Reactor
+
+To move, select a **valid direction** and then select **MARK!**.
+
+Moving causes your torpedo to charge up.
+
+Move to avoid the reactor overheating. 
+
+The reactor will tick up throughout the game. If the reactor is at three and ticks again, it will go back to zero, but you will take damage. The reactor must be at at least one in order for you to move.
+
+#### Valid Directions
+
+You may **not** select a direction that would cause you to more **into an island**, **into your own trail**, or **outside of the play area**.
 
 ## Demo
 
 Here is a demonstration of the software.
 
-{Provide a link to your YouTube demonstration.  It should be a 4-5 minute demo of the software running (you will need to show two pieces of software running and communicating with each other) and a walkthrough of the code.}
-
-{Provide a link to your YouTube demonstration.  It should be a 4-5 minute demo of the game being played and a walkthrough of the code.}
-
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://youtu.be/miNvWQY6qdo)
 
 # Network Communication
 
@@ -118,10 +143,9 @@ If we just received this, we could tell a number of things about our opponent...
 
 # Future Work
 
-{Make a list of things that you need to fix, improve, and add in the future.}
-* Item 1
-* Item 2
-* Item 3
-* Item 4
-* Item 5
-* Item 6
+* Make the island configuration change.
+* Sometimes, a couple reactor sprites seem to jump down and the back up (FIX THIS). 
+* Add mines that the player can drop and detonate to damage the opponent
+* Add a max range to the torpedo
+* Add the capability of hitting your own ship if detonations are too close.
+* Add a way to restart the game in the program
